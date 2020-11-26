@@ -16,22 +16,31 @@ describe("Oven happy flow", function () {
     recipe = await TestPieRecipe.deploy();
     await recipe.deployed();
 
+    const recipeAddress = recipe.address;
+    console.log(`Recipe deployed at: ${recipeAddress}`);
+
+
     const TestPie = await ethers.getContractFactory(
       "TestPie"
     );
     pool = await TestPie.deploy(parseEther("10000000000"), recipe.address);
     await pool.deployed();
+
+    const poolAddress = pool.address;
+    console.log(`Pool deployed at: ${poolAddress}`);
   });
 
-  it("Should deploy oven", async function () {
-    const Oven = await ethers.getContractFactory("Oven");
-    oven = await Oven.deploy(owner.getAddress(), pool.address, recipe.address);
-    await oven.deployed();
+//   it("Should deploy oven", async function () {
+//     const Oven = await ethers.getContractFactory("Oven");
+//     oven = await Oven.deploy(owner.getAddress(), pool.address, recipe.address);
+//     await oven.deployed();
 
-    expect(await oven.getCap()).to.be.eq(0);
-    await oven.setCap(parseEther("100"))
-    expect(await oven.getCap()).to.be.eq(parseEther("100"));
-  });
+//     console.log(`Oven deployed at: ${oven.address}`);
+
+//     expect(await oven.getCap()).to.be.eq(0);
+//     await oven.setCap(parseEther("100"))
+//     expect(await oven.getCap()).to.be.eq(parseEther("100"));
+//   });
 //   it("Deposit", async function () {
 //     await expect(await oven.ethBalanceOf(owner.getAddress())).to.be.eq(0);
 
@@ -51,65 +60,81 @@ describe("Oven happy flow", function () {
 //   it("Starts exchanging", async function () {
 //     await recipe.testSetCalcToPieAmount(parseEther("1"))
 
-//     await expect(await oven.ethBalanceOf(owner.getAddress())).to.be.eq(parseEther("1"));
-//     await expect(await oven.outputBalanceOf(owner.getAddress())).to.be.eq(parseEther("0"));
+//     const ethBalanceOfBefore = await oven.ethBalanceOf(owner.getAddress());
+//     console.log(`ethBalanceOfBefore is: ${ethBalanceOfBefore}`);
+//     const outputBalanceOfBefore = await oven.outputBalanceOf(owner.getAddress());
+//     console.log(`outputBalanceOfBefore is: ${outputBalanceOfBefore}`);
 
-//     await oven.bake([owner.getAddress()], parseEther("1"), parseEther("2"));
+//     // await expect(await oven.ethBalanceOf(owner.getAddress())).to.be.eq(parseEther("1"));
+//     // await expect(await oven.outputBalanceOf(owner.getAddress())).to.be.eq(parseEther("0"));
 
-//     await expect(await oven.ethBalanceOf(owner.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await oven.outputBalanceOf(owner.getAddress())).to.be.eq(parseEther("1"));
+//     // await oven.bake([owner.getAddress()], parseEther("1"), parseEther("2"));
+//     await oven.bake([owner.getAddress()], parseEther("6.9"), parseEther("10"));
+
+//     // await expect(await oven.ethBalanceOf(owner.getAddress())).to.be.eq(parseEther("0"));
+//     // await expect(await oven.outputBalanceOf(owner.getAddress())).to.be.eq(parseEther("1"));
+
+
+//     const ethBalanceOfAfter = await oven.ethBalanceOf(owner.getAddress());
+//     console.log(`ethBalanceOfAfter is: ${ethBalanceOfAfter}`);
+
+//     const outputBalanceOfAfter = await oven.outputBalanceOf(owner.getAddress());
+//     console.log(`outputBalanceOfAfter is: ${outputBalanceOfAfter}`);
+
 //  });
-//   it("Withdraw Output", async function () {
+  // it("Withdraw Output", async function () {
 
-//     await expect(await oven.outputBalanceOf(owner.getAddress())).to.be.eq(parseEther("1"));
-//     await expect(await pool.balanceOf(owner.getAddress())).to.be.eq(parseEther("0"))
-//     await oven.withdrawOutput(owner.getAddress())
-//     await expect(await oven.outputBalanceOf(owner.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await pool.balanceOf(owner.getAddress())).to.be.eq(parseEther("1"))
-//   });
+  //   await expect(await oven.outputBalanceOf(owner.getAddress())).to.be.eq(parseEther("1"));
+  //   await expect(await pool.balanceOf(owner.getAddress())).to.be.eq(parseEther("0"))
+
+  //   await oven.withdrawOutput(owner.getAddress())
+    
+  //   await expect(await oven.outputBalanceOf(owner.getAddress())).to.be.eq(parseEther("0"));
+  //   await expect(await pool.balanceOf(owner.getAddress())).to.be.eq(parseEther("1"))
+  // });
 });
 
-// describe("Test Deployment flow", function () {
-//   let pool : any;
-//   let recipe : any;
-//   let owner : any;
-//   let user1 : any;
-//   let user2 : any;
-//   let user3 : any;
-//   let oven : any;
-//   const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
+describe("Test Deployment flow", function () {
+  let pool : any;
+  let recipe : any;
+  let owner : any;
+  let user1 : any;
+  let user2 : any;
+  let user3 : any;
+  let oven : any;
+  const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 
-//   it("Regular deployment", async function () {
-//     [owner, user1, user2, user3] = await ethers.getSigners();
-//     const TestPieRecipe = await ethers.getContractFactory(
-//       "TestPieRecipe"
-//     );
-//     recipe = await TestPieRecipe.deploy();
-//     await recipe.deployed();
+  it("Regular deployment", async function () {
+    [owner, user1, user2, user3] = await ethers.getSigners();
+    const TestPieRecipe = await ethers.getContractFactory(
+      "TestPieRecipe"
+    );
+    recipe = await TestPieRecipe.deploy();
+    await recipe.deployed();
 
-//     const TestPie = await ethers.getContractFactory(
-//       "TestPie"
-//     );
-//     pool = await TestPie.deploy(parseEther("10000000000"), recipe.address);
-//     await pool.deployed();
+    const TestPie = await ethers.getContractFactory(
+      "TestPie"
+    );
+    pool = await TestPie.deploy(parseEther("10000000000"), recipe.address);
+    await pool.deployed();
 
-//     const Oven = await ethers.getContractFactory("Oven");
-//     oven = await Oven.deploy(owner.getAddress(), pool.address, recipe.address);
-//     await oven.deployed();
-//     await oven.setCap(parseEther("1000"));
+    const Oven = await ethers.getContractFactory("Oven");
+    oven = await Oven.deploy(owner.getAddress(), pool.address, recipe.address);
+    await oven.deployed();
+    await oven.setCap(parseEther("1000"));
 
-//     await expect(await oven.pie()).to.be.eq(pool.address)
-//     await oven.bake([], 1, 1)
-//     await owner.sendTransaction({
-//       to: oven.address,
-//       value:parseEther("1.0")
-//     });
-//     await oven.deposit({ value: parseEther("1") });
-//     await oven.withdrawAll(owner.getAddress())
-//     await oven.withdrawAllETH(owner.getAddress())
-//     await oven.withdrawETH(parseEther("0"), owner.getAddress())
-//     await oven.withdrawOutput(owner.getAddress())
-//   })
+    await expect(await oven.pie()).to.be.eq(pool.address)
+    await oven.bake([], 1, 1)
+    await owner.sendTransaction({
+      to: oven.address,
+      value:parseEther("1.0")
+    });
+    await oven.deposit({ value: parseEther("1") });
+    await oven.withdrawAll(owner.getAddress())
+    await oven.withdrawAllETH(owner.getAddress())
+    await oven.withdrawETH(parseEther("0"), owner.getAddress())
+    await oven.withdrawOutput(owner.getAddress())
+  })
 //   it("Set pie failing", async function () {
 //     await expect(oven.setPie(pool.address)).to.be.revertedWith("PIE_ALREADY_SET")
 //   })
@@ -224,10 +249,7 @@ describe("Oven happy flow", function () {
 //       await expect(oven.connect(user1).setCap(ZERO_ADDRESS)).to.be.revertedWith("NOT_CONTROLLER")
 //     })
 //   })
-
-
-
-// })
+});
 
 // describe("Test baking", function () {
 //   let pool : any;

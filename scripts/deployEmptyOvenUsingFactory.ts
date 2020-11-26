@@ -1,6 +1,6 @@
 async function deployEmptyOvenUsingFactory() {
     // use env files for this?
-    const OvenFactoryAddress = "0x4a1d8455A2fEF2C922865A9988a2d617FEad4fF9"
+    const OvenFactoryAddress = "0x3619DbE27d7c1e7E91aA738697Ae7Bc5FC3eACA5"
 
     const OvenFactory = await ethers.getContractAt("OvenFactoryContract", OvenFactoryAddress);
     const tx = await OvenFactory.CreateEmptyOven();

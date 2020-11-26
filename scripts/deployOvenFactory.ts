@@ -10,8 +10,8 @@ async function deployOvenFactory() {
 
     console.log("Oven Factory controller set to:", await owner.getAddress());
 
-    console.log("Please RUN:")
-    console.log("npx hardhat verify --network {network}", oven.address)
+    // console.log("Please RUN:")
+    // console.log("npx hardhat verify --network {network}", oven.address)
   }
 
 deployOvenFactory()

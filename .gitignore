@@ -6,3 +6,6 @@ node_modules
 cache
 artifacts
 typechain
+
+#Temp Files
+temp

@@ -292,16 +292,19 @@ describe("Test baking", function () {
     );
     recipe = await TestPieRecipe.deploy();
     await recipe.deployed();
+    console.log(`recipe is: ${recipe.address}`);
 
     const TestPie = await ethers.getContractFactory(
       "TestPie"
     );
     pool = await TestPie.deploy(parseEther("10000000000"), recipe.address);
     await pool.deployed();
+    console.log(`pool is: ${pool.address}`);
 
     const Oven = await ethers.getContractFactory("Oven");
     oven = await Oven.deploy(owner.getAddress(), pool.address, recipe.address);
     await oven.deployed();
+    console.log(`oven is: ${oven.address}`);
 
     await oven.setCap(parseEther("1000"));
     await oven.connect(user1).deposit({ value: parseEther("100") })

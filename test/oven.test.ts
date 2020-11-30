@@ -463,19 +463,19 @@ describe("Test deposit/withdraw eth + cap", function () {
   //   await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("250"))
   // })
 
-  it("Deposit2", async function () {
-    await oven.connect(user1).deposit({ value: parseEther("123")});
+  // it("Deposit2", async function () {
+  //   await oven.connect(user1).deposit({ value: parseEther("123")});
 
-    const balance1 = await oven.ethBalanceOf(user1.getAddress());
-    console.log(`balance1 is: ${balance1}`);
+  //   const balance1 = await oven.ethBalanceOf(user1.getAddress());
+  //   console.log(`balance1 is: ${balance1}`);
 
-    await oven.connect(user1).withdrawETH(parseEther("10"),user2.getAddress());
+  //   await oven.connect(user1).withdrawETH(parseEther("10"),user2.getAddress());
 
-    const balanceUser1 = await oven.ethBalanceOf(user1.getAddress());
-    console.log(`balanceUser1 is: ${balanceUser1}`);
-    const balanceUser2 = await oven.ethBalanceOf(user2.getAddress());
-    console.log(`balanceUser2 is: ${balanceUser2}`);
-  })
+  //   const balanceUser1 = await oven.ethBalanceOf(user1.getAddress());
+  //   console.log(`balanceUser1 is: ${balanceUser1}`);
+  //   const balanceUser2 = await oven.ethBalanceOf(user2.getAddress());
+  //   console.log(`balanceUser2 is: ${balanceUser2}`);
+  // })
 
   // it("Deposit ether transfer", async function () {
   //   await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"))
@@ -493,128 +493,131 @@ describe("Test deposit/withdraw eth + cap", function () {
   // });
 
 
-  it("Deposit and withdraw", async function () {
+  // it("Deposit and withdraw", async function () {
 
-    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"))
-    await oven.connect(user1).deposit({ value: parseEther("100") })
-    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"))
+  //   await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"))
+  //   await oven.connect(user1).deposit({ value: parseEther("100") })
+  //   await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"))
 
-    await oven.connect(user1).withdrawETH(parseEther("10"), user2.getAddress());
-    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("90"))
+  //   await oven.connect(user1).withdrawETH(parseEther("10"), user2.getAddress());
+  //   await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("90"))
 
-    // TODO validate user2 eth balance
-  })
+  //   // TODO validate user2 eth balance
+  // })
 });
 
-// describe("Test withdraw output", function () {
+describe("Test withdraw output", function () {
 
-//   let pool : any;
-//   let recipe : any;
-//   let owner : any;
-//   let user1 : any;
-//   let user2 : any;
-//   let user3 : any;
-//   let oven : any;
+  let pool : any;
+  let recipe : any;
+  let owner : any;
+  let user1 : any;
+  let user2 : any;
+  let user3 : any;
+  let oven : any;
 
-//   beforeEach(async function () {
-//     [owner, user1, user2, user3] = await ethers.getSigners();
-//     const TestPieRecipe = await ethers.getContractFactory(
-//       "TestPieRecipe"
-//     );
-//     recipe = await TestPieRecipe.deploy();
-//     await recipe.deployed();
+  beforeEach(async function () {
+    [owner, user1, user2, user3] = await ethers.getSigners();
+    const TestPieRecipe = await ethers.getContractFactory(
+      "TestPieRecipe"
+    );
+    recipe = await TestPieRecipe.deploy();
+    await recipe.deployed();
+    console.log(`recipe is: ${recipe.address}`);
 
-//     const TestPie = await ethers.getContractFactory(
-//       "TestPie"
-//     );
-//     pool = await TestPie.deploy(parseEther("10000000000"), recipe.address);
-//     await pool.deployed();
+    const TestPie = await ethers.getContractFactory(
+      "TestPie"
+    );
+    pool = await TestPie.deploy(parseEther("10000000000"), recipe.address);
+    await pool.deployed();
+    console.log(`pool is: ${pool.address}`);
 
-//     const Oven = await ethers.getContractFactory("Oven");
-//     oven = await Oven.deploy(owner.getAddress(), pool.address, recipe.address);
-//     await oven.deployed();
+    const Oven = await ethers.getContractFactory("Oven");
+    oven = await Oven.deploy(owner.getAddress(), pool.address, recipe.address);
+    await oven.deployed();
+    console.log(`oven is: ${oven.address}`);
 
-//     await oven.setCap(parseEther("1000"));
-//     await oven.connect(user1).deposit({ value: parseEther("100") })
+    await oven.setCap(parseEther("1000"));
+    await oven.connect(user1).deposit({ value: parseEther("100") })
 
-//     await recipe.testSetCalcToPieAmount(parseEther("90"))
-//     await oven.bake(
-//       [user1.getAddress()],
-//       parseEther("100"),
-//       parseEther("100")
-//     )
-//   });
-//   it("Withdraw", async function () {
-//     await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
-//     await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
-//     await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await recipe.testSetCalcToPieAmount(parseEther("90"))
+    await oven.bake(
+      [user1.getAddress()],
+      parseEther("100"),
+      parseEther("100")
+    )
+  });
+  it("Withdraw", async function () {
+    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
+    await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
+    await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
 
-//     await oven.connect(user1).withdrawOutput(user1.getAddress())
+    await oven.connect(user1).withdrawOutput(user1.getAddress())
 
-//     await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
-//     await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
-//   })
-//   it("Withdraw couple times", async function () {
-//     await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
-//     await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
-//     await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
+    await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
+  })
+  it("Withdraw couple times", async function () {
+    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
+    await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
+    await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
 
-//     await oven.connect(user1).withdrawOutput(user1.getAddress())
+    await oven.connect(user1).withdrawOutput(user1.getAddress())
 
-//     await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
-//     await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
+    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
+    await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
 
-//     await oven.connect(user1).withdrawOutput(user1.getAddress())
+    await oven.connect(user1).withdrawOutput(user1.getAddress())
 
-//     await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
-//     await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
+    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
+    await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
 
-//   })
-//   it("Withdraw to other ussr", async function () {
-//     await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
-//     await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
-//     await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+  })
+  it("Withdraw to other ussr", async function () {
+    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
+    await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
+    await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
 
-//     await expect(await oven.ethBalanceOf(user2.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await oven.outputBalanceOf(user2.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await pool.balanceOf(user2.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await oven.ethBalanceOf(user2.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await oven.outputBalanceOf(user2.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await pool.balanceOf(user2.getAddress())).to.be.eq(parseEther("0"));
 
-//     await oven.connect(user1).withdrawOutput(user2.getAddress())
+    await oven.connect(user1).withdrawOutput(user2.getAddress())
 
-//     await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
-//     await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
+    await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
 
-//     await expect(await oven.ethBalanceOf(user2.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await oven.outputBalanceOf(user2.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await pool.balanceOf(user2.getAddress())).to.be.eq(parseEther("100"));
-//   })
-//   it("Withdraw all", async function () {
-//     await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
-//     await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
-//     await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await oven.ethBalanceOf(user2.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await oven.outputBalanceOf(user2.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await pool.balanceOf(user2.getAddress())).to.be.eq(parseEther("100"));
+  })
+  it("Withdraw all", async function () {
+    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
+    await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
+    await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
 
-//     await oven.connect(user1).withdrawAll(user1.getAddress())
+    await oven.connect(user1).withdrawAll(user1.getAddress())
 
-//     await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
-//   })
-//   it("Withdraw all ETH", async function () {
-//     await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
-//     await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
-//     await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
+  })
+  it("Withdraw all ETH", async function () {
+    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("10"));
+    await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
+    await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
 
-//     await oven.connect(user1).withdrawAllETH(user1.getAddress())
+    await oven.connect(user1).withdrawAllETH(user1.getAddress())
 
-//     await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
-//     await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
-//     await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
-//   })
-// });
+    await expect(await oven.ethBalanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+    await expect(await oven.outputBalanceOf(user1.getAddress())).to.be.eq(parseEther("100"));
+    await expect(await pool.balanceOf(user1.getAddress())).to.be.eq(parseEther("0"));
+  })
+});
 
 // describe("Test controller functions", function () {
 //   let pool : any;

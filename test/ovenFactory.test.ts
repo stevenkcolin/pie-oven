@@ -67,12 +67,18 @@ describe("ovenFactory", function () {
     const tx = await ovenFactory.CreateOven(pool.address, recipe.address)
     const receipt = await tx.wait()
     const oven = receipt.events[0].args.Oven;
+
+
     expect(receipt.events[0].args.Controller).to.be.eq(await owner.getAddress());
     expect(receipt.events[0].args.Pie).to.be.eq(pool.address);
     expect(receipt.events[0].args.Recipe).to.be.eq(recipe.address)
 
     expect(await ovenFactory.isOven(oven)).to.be.eq(true);
     expect(await ovenFactory.ovens(0)).to.be.eq(oven);
+
+    console.log(`pools is: ${pool.address}`);
+    console.log(`recipe is: ${recipe.address}`);
+    console.log(`oven is: ${oven.address}`);
 
     const ovenContract = await ethers.getContractAt("Oven", oven);
     expect(await ovenContract.getCap()).to.be.eq(ethers.BigNumber.from("2").pow(256).sub(1))

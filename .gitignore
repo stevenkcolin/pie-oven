@@ -7,3 +7,6 @@ cache
 artifacts
 typechain
 temp
+
+#Temp Files
+temp

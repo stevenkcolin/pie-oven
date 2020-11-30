@@ -8,14 +8,14 @@ async function deployEmptyOvenUsingFactory() {
     const OvenAddress = txData.events[0].args.Oven
 
     console.log("Oven deployed to:", OvenAddress);
-    console.log("Please RUN:")
-    console.log(
-        "npx hardhat verify --network {network}",
-        OvenAddress,
-        OvenFactoryAddress,
-        "0x0000000000000000000000000000000000000000",
-        "0x0000000000000000000000000000000000000000"
-    )
+    // console.log("Please RUN:")
+    // console.log(
+    //     "npx hardhat verify --network {network}",
+    //     OvenAddress,
+    //     OvenFactoryAddress,
+    //     "0x0000000000000000000000000000000000000000",
+    //     "0x0000000000000000000000000000000000000000"
+    // )
   }
 
 deployEmptyOvenUsingFactory()
